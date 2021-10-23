@@ -5,10 +5,14 @@ import androidx.lifecycle.Observer
 import com.example.navigationdrawerdemo.repository.DevicesRepository
 import com.example.navigationdrawerdemo.repository.models.Device
 import com.example.navigationdrawerdemo.ui.UiState
-import com.example.navigationdrawerdemo.util.TestCoroutineRule
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,14 +32,21 @@ class DevicesViewModelTest {
     @get:Rule
     private val testDispatcher = TestCoroutineDispatcher()
 
-    @get:Rule
-    val testCoroutineRule = TestCoroutineRule()
-
     @Mock
     private lateinit var repository: DevicesRepository
 
     @Mock
     private lateinit var uiStateObserver: Observer<UiState>
+
+    @Before
+    fun setup() {
+        Dispatchers.setMain(testDispatcher)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
 
     @Test
     fun `when onLoad() is called, should show loading`() = runBlockingTest {

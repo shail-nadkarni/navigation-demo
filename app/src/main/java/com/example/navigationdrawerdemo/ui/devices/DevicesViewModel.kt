@@ -11,6 +11,7 @@ import com.example.navigationdrawerdemo.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.android.parcel.Parcelize
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -20,12 +21,14 @@ class DevicesViewModel @Inject constructor(
 
     val uiState = MutableLiveData<UiState>(UiState.Loading)
 
-    fun onLoad() = viewModelScope.launch {
+    fun onLoad() = viewModelScope.launch(Dispatchers.IO) {
         val result = devicesRepository.getDevices()
-        uiState.value = when (result) {
-            is Result.Error -> UiState.Error(result.error.toString())
-            is Result.Success -> UiState.Success(result.value.toUiModel())
-        }
+        uiState.postValue(
+            when (result) {
+                is Result.Error -> UiState.Error(result.error.toString())
+                is Result.Success -> UiState.Success(result.value.toUiModel())
+            }
+        )
     }
 }
 
