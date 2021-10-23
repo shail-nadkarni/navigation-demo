@@ -6,9 +6,10 @@ import com.example.navigationdrawerdemo.repository.models.Device
 import javax.inject.Inject
 
 class DevicesRepository @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val networkCall: NetworkCall
 ) {
     suspend fun getDevices(): Result<List<Device>> {
-        return NetworkCall.safeApiCall { apiService.getDevices().devices }
+        return networkCall.safeApiCall { apiService.getDevices().devices }
     }
 }

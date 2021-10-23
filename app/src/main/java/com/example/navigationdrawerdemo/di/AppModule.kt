@@ -3,6 +3,7 @@ package com.example.navigationdrawerdemo.di
 import com.example.navigationdrawerdemo.BuildConfig
 import com.example.navigationdrawerdemo.api.ApiService
 import com.example.navigationdrawerdemo.api.Constants
+import com.example.navigationdrawerdemo.api.NetworkCall
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,6 +20,9 @@ object AppModule {
 
     @Provides
     fun provideBaseUrl() = Constants.BASE_URL
+
+    @Provides
+    fun provideNetworkCall() = NetworkCall()
 
     @Singleton
     @Provides
