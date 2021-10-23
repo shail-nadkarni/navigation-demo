@@ -7,8 +7,8 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.appcompat.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -16,12 +16,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.navigationdrawerdemo.R
 import com.example.navigationdrawerdemo.databinding.FragmentDevicesBinding
-import com.example.navigationdrawerdemo.models.Device
+import com.example.navigationdrawerdemo.ui.UiState
 import com.example.navigationdrawerdemo.ui.devices.adapter.DevicesAdapter
-import com.example.navigationdrawerdemo.util.Status
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class DevicesFragment : Fragment() {
@@ -29,7 +27,7 @@ class DevicesFragment : Fragment() {
     private val devicesViewModel: DevicesViewModel by viewModels()
     private var _binding: FragmentDevicesBinding? = null
     private lateinit var adapter: DevicesAdapter
-    private lateinit var deviceList: List<Device>
+    private lateinit var deviceList: List<DeviceUiModel>
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -43,7 +41,7 @@ class DevicesFragment : Fragment() {
         _binding = FragmentDevicesBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setHasOptionsMenu(true)
-        adapter = DevicesAdapter { device: Device ->
+        adapter = DevicesAdapter { device: DeviceUiModel ->
             run {
                 val action = DevicesFragmentDirections.actionNavDevicesToDeviceDetails(device)
                 findNavController().navigate(action)
@@ -55,21 +53,21 @@ class DevicesFragment : Fragment() {
 
         devicesViewModel.onLoad()
 
-        devicesViewModel.res.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Status.SUCCESS -> {
+        devicesViewModel.uiState.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is UiState.Success -> {
                     binding.progress.visibility = View.GONE
                     binding.rvDevices.visibility = View.VISIBLE
-                    it.data?.let { response ->
+                    it.let { response ->
                         deviceList = response.devices
                         adapter.submitList(deviceList)
                     }
                 }
-                Status.LOADING -> {
+                is UiState.Loading -> {
                     binding.progress.visibility = View.VISIBLE
                     binding.rvDevices.visibility = View.GONE
                 }
-                Status.ERROR -> {
+                is UiState.Error -> {
                     binding.progress.visibility = View.GONE
                     binding.rvDevices.visibility = View.VISIBLE
                     Snackbar.make(root, "Something went wrong", Snackbar.LENGTH_SHORT).show()
@@ -106,7 +104,7 @@ class DevicesFragment : Fragment() {
 
     private fun filter(text: String) {
         // creating a new array list to filter our data.
-        val filteredList: ArrayList<Device> = ArrayList()
+        val filteredList: ArrayList<DeviceUiModel> = ArrayList()
 
         // running a for loop to compare elements.
         for (item in deviceList) {

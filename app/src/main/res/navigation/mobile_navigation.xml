@@ -34,7 +34,7 @@
     tools:layout="@layout/fragment_device_details">
     <argument
       android:name="device"
-      app:argType="com.example.navigationdrawerdemo.models.Device" />
+      app:argType="com.example.navigationdrawerdemo.ui.devices.DeviceUiModel" />
   </fragment>
 
 </navigation>

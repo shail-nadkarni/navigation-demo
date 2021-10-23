@@ -1,35 +1,55 @@
 package com.example.navigationdrawerdemo.ui.devices
 
-import androidx.lifecycle.LiveData
+import android.os.Parcelable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.navigationdrawerdemo.models.DevicesResponse
 import com.example.navigationdrawerdemo.repository.DevicesRepository
-import com.example.navigationdrawerdemo.util.Resource
+import com.example.navigationdrawerdemo.repository.Result
+import com.example.navigationdrawerdemo.repository.models.Device
+import com.example.navigationdrawerdemo.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class DevicesViewModel @Inject constructor(
     private val devicesRepository: DevicesRepository
-    ) : ViewModel() {
+) : ViewModel() {
 
-    private val _res = MutableLiveData<Resource<DevicesResponse>>()
-
-    val res : LiveData<Resource<DevicesResponse>>
-        get() = _res
+    val uiState = MutableLiveData<UiState>(UiState.Loading)
 
     fun onLoad() = viewModelScope.launch {
-        _res.postValue(Resource.loading(null))
-        devicesRepository.getDevices().let {
-            if (it.isSuccessful){
-                _res.postValue(Resource.success(it.body()))
-            }else{
-                _res.postValue(Resource.error(it.errorBody().toString(), null))
-            }
+        val result = devicesRepository.getDevices()
+        uiState.value = when (result) {
+            is Result.Error -> UiState.Error(result.error.toString())
+            is Result.Success -> UiState.Success(result.value.toUiModel())
         }
     }
-
 }
+
+@Parcelize
+data class DeviceUiModel(
+    val id: String,
+    val type: String,
+    val price: Int,
+    val currency: String,
+    val isFavorite: Boolean,
+    val imageUrl: String,
+    val title: String,
+    val description: String
+) : Parcelable
+
+fun Device.toUiModel() = DeviceUiModel(
+    id = id,
+    type = type,
+    price = price,
+    currency = currency,
+    isFavorite = isFavorite,
+    imageUrl = imageUrl,
+    title = title,
+    description = description
+)
+
+fun List<Device>.toUiModel() = map { it.toUiModel() }

@@ -12,10 +12,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.navigationdrawerdemo.R
-import com.example.navigationdrawerdemo.models.Device
+import com.example.navigationdrawerdemo.ui.devices.DeviceUiModel
 
 
-class DevicesAdapter(val onItemClick: (Device) -> Unit) :
+class DevicesAdapter(val onItemClick: (DeviceUiModel) -> Unit) :
     RecyclerView.Adapter<DevicesAdapter.DevicesViewHolder>() {
 
     inner class DevicesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,19 +35,19 @@ class DevicesAdapter(val onItemClick: (Device) -> Unit) :
         }
     }
 
-    private val diffCallback = object : DiffUtil.ItemCallback<Device>() {
-        override fun areItemsTheSame(oldItem: Device, newItem: Device): Boolean {
+    private val diffCallback = object : DiffUtil.ItemCallback<DeviceUiModel>() {
+        override fun areItemsTheSame(oldItem: DeviceUiModel, newItem: DeviceUiModel): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Device, newItem: Device): Boolean {
+        override fun areContentsTheSame(oldItem: DeviceUiModel, newItem: DeviceUiModel): Boolean {
             return oldItem.hashCode() == newItem.hashCode()
         }
     }
 
     private val differ = AsyncListDiffer(this, diffCallback)
 
-    fun submitList(list: List<Device>) = differ.submitList(list)
+    fun submitList(list: List<DeviceUiModel>) = differ.submitList(list)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DevicesViewHolder {
         return DevicesViewHolder(

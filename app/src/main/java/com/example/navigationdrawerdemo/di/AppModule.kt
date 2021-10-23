@@ -1,11 +1,8 @@
 package com.example.navigationdrawerdemo.di
 
-import com.example.navigationdrawerdemo.BaseApplication
 import com.example.navigationdrawerdemo.BuildConfig
-import com.example.navigationdrawerdemo.api.ApiHelper
 import com.example.navigationdrawerdemo.api.ApiService
-import com.example.navigationdrawerdemo.api.impl.ApiHelperImpl
-import com.example.navigationdrawerdemo.util.Constants
+import com.example.navigationdrawerdemo.api.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,8 +45,4 @@ object AppModule {
     @Provides
     @Singleton
     fun provideApiService(retrofit: Retrofit) = retrofit.create(ApiService::class.java)
-
-    @Provides
-    @Singleton
-    fun provideApiHelper(apiHelper: ApiHelperImpl): ApiHelper = apiHelper
 }
