@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.navigationdrawerdemo.R
 import com.example.navigationdrawerdemo.databinding.FragmentDeviceDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,13 +41,13 @@ class DeviceDetailsFragment : Fragment() {
         val device = args.device
 
         val tvTitle = binding.tvTitle
-        tvTitle.text = device.title
+        tvTitle.text = context?.getString(R.string.label_title, device.title)
 
         val tvPrice = binding.tvPrice
-        tvPrice.text = device.price.toString()
+        tvPrice.text = context?.getString(R.string.label_price, device.currency, device.price)
 
         val tvType = binding.tvType
-        tvType.text = device.type
+        tvType.text = context?.getString(R.string.label_type, device.type)
 
         Glide.with(this)
             .load(device.imageUrl)
