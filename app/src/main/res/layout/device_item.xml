@@ -8,7 +8,8 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/white">
 
     <ImageView
       android:id="@+id/ivImage"
@@ -21,10 +22,9 @@
       android:id="@+id/tvTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:textColor="#000"
+      android:textColor="@color/black"
       android:textSize="20sp"
       android:textStyle="bold"
-      android:text="Smasumkjhsdfjbnk"
       android:layout_marginStart="8dp"
       app:layout_constraintStart_toEndOf="@id/ivImage"
       app:layout_constraintTop_toTopOf="@id/ivImage" />
@@ -34,8 +34,8 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:textSize="16sp"
+      android:textColor="@color/black"
       android:layout_marginStart="8dp"
-      android:text="javhsdjhasdjhg"
       android:layout_marginTop="4dp"
       app:layout_constraintStart_toEndOf="@id/ivImage"
       app:layout_constraintTop_toBottomOf="@id/tvTitle" />
@@ -45,8 +45,8 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:textSize="16sp"
+      android:textColor="@color/black"
       android:layout_marginStart="8dp"
-      android:text="kjgadskjaghs"
       android:layout_marginTop="4dp"
       app:layout_constraintStart_toEndOf="@id/ivImage"
       app:layout_constraintTop_toBottomOf="@id/tvPrice" />

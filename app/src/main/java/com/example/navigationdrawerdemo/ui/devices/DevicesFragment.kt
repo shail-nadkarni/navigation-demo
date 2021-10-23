@@ -118,11 +118,14 @@ class DevicesFragment : Fragment() {
         if (filteredList.isEmpty()) {
             // if no item is added in filtered list we are
             // displaying a toast message as no data found.
-            Toast.makeText(activity, "No Data Found..", Toast.LENGTH_SHORT).show()
+            binding.tvNoResults.visibility = View.VISIBLE
+            binding.rvDevices.visibility = View.GONE
         } else {
             // at last we are passing that filtered
             // list to our adapter class.
             adapter.submitList(filteredList)
+            binding.tvNoResults.visibility = View.GONE
+            binding.rvDevices.visibility = View.VISIBLE
         }
     }
 }
