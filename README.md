@@ -3,7 +3,7 @@
 ## About this project
 
 - The project follows MVVM architecture
-- Latest jetpack components like ViewModel, LiveData, Coroutines..
+- Latest jetpack components like ViewModel, LiveData, Coroutines, Data Binding..
 - Hilt is used for dependency injection
 - Retrofit is used for networking
 - https://www.mockable.io/ is used for mocking backend response
